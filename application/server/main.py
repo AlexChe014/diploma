@@ -4,7 +4,6 @@ from starlette.responses import RedirectResponse
 import os
 from application.components import predict, read_imagefile
 from application.schema import Symptom
-from application.components.prediction import symptom_check
 
 
 
