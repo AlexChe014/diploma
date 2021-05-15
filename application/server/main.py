@@ -30,9 +30,7 @@ async def predict_api(file: UploadFile = File(...)):
     return prediction
 
 
-@app.post("/api/covid-symptom-check")
-def check_risk(symptom: Symptom):
-    return symptom_check.get_risk_level(symptom)
+
 
 
 if __name__ == "__main__":
