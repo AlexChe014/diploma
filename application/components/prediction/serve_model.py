@@ -24,16 +24,16 @@ def predict(image: Image.Image):
     #image = np.expand_dims(image, 0)
     #image = image / 127.5 - 1.0
 
-    result = decode_predictions(model.predict(image), 2)[0]
+    #result = decode_predictions(model.predict(image), 2)[0]
 
-    response = []
-    for i, res in enumerate(result):
-        resp = {}
-        resp["class"] = res[1]
-        resp["confidence"] = f"{res[2]*100:0.2f} %"
+    #response = []
+    #for i, res in enumerate(result):
+    #   resp = {}
+    #    resp["class"] = res[1]
+    #    resp["confidence"] = f"{res[2]*100:0.2f} %"
 
-        response.append(resp)
-
+    #    response.append(resp)
+    response = model.predict_classes(image)
     return response
 
 
