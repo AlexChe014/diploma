@@ -6,5 +6,4 @@ gunicorn
 uvicorn
 numpy
 python-multipart
-os
-cv2
+opencv-python
