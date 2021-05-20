@@ -5,8 +5,9 @@ import tensorflow as tf
 import cv2 as cv
 from PIL import Image
 from tensorflow.keras.applications.imagenet_utils import decode_predictions
+from tensorflow.keras.models import load_model
 
-model = tf.keras.models.load_model(os.path.join(os.getcwd(), 'application', 'model.h5'))
+model = load_model(os.path.join(os.getcwd(), 'application', 'model_2.h5'))
 
 
 def load_model():
@@ -39,7 +40,7 @@ def predict(image: Image.Image):
 
 def read_imagefile(file):# -> Image.Image:
     IMG_SIZE = 100
-    image = cv.imread(r"normal.jpg", cv.IMREAD_GRAYSCALE)
+    image = cv.imread(file, cv.IMREAD_GRAYSCALE)
     image = cv.resize(image,(IMG_SIZE, IMG_SIZE))
     image = image.reshape(1, IMG_SIZE, IMG_SIZE, 1)
     #image = Image.open(BytesIO(file))
