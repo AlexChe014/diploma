@@ -33,13 +33,13 @@ async def predict_api(file: UploadFile = File(...)):
         await out_file.write(content) 
     IMG_SIZE = 150
     image = plt.imread(file_location)
-    image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    image_new = cv.resize(image,(IMG_SIZE, IMG_SIZE))
-    image_new = image_new.reshape(1, IMG_SIZE, IMG_SIZE, 1)
+    #image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    #image_new = cv.resize(image,(IMG_SIZE, IMG_SIZE))
+    #image_new = image_new.reshape(1, IMG_SIZE, IMG_SIZE, 1)
     #image = read_imagefile(file_location)
-    prediction = predict(image_new)
+    #prediction = predict(image_new)
 
-    return prediction
+    return image
 
 
 
