@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from application.components import predict, read_imagefile
 from application.schema import Symptom
+from PIL import Image
 
 
 
@@ -27,17 +28,17 @@ async def predict_api(file: UploadFile = File(...)):
     if not extension:
         return "Image must be jpg or png format!"
     file_location = os.path.join(os.getcwd(), 'application', "images", file.filename)
-    async with aiofiles.open(file_location, 'wb') as out_file:
+    async with aiofiles.open(file_location, 'wb+') as out_file:
         content = await file.read()
         await out_file.write(content) 
     IMG_SIZE = 150
-    image = cv.imread(file_location, cv.IMREAD_GRAYSCALE)
-    #test_image = cv.resize(image,(IMG_SIZE, IMG_SIZE))
-    #image = image.reshape(1, IMG_SIZE, IMG_SIZE, 1)
+    image = plt.imread(file_location)
+    image = cv.resize(image,(IMG_SIZE, IMG_SIZE))
+    image = image.reshape(1, IMG_SIZE, IMG_SIZE, 1)
     #image = read_imagefile(file_location)
-    #prediction = predict(image)
+    prediction = predict(image)
 
-    return image
+    return prediction
 
 
 
