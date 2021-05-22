@@ -6,7 +6,7 @@ gunicorn
 uvicorn
 numpy
 python-multipart
-opencv-python
+opencv-python-headless
 matplotlib
 numpy
 aiofiles
