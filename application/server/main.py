@@ -11,11 +11,12 @@ import numpy as np
 from application.components import predict, read_imagefile
 from application.schema import Symptom
 from PIL import Image
+from tensorflow.keras.models import load_model
 
 
 
 app = FastAPI(title='Tensorflow FastAPI Starter Pack')
-
+model = load_model(os.path.join(os.getcwd(), 'application', 'model_2.h5'))
 
 @app.get("/", include_in_schema=False)
 async def index():
@@ -37,9 +38,9 @@ async def predict_api(file: UploadFile = File(...)):
     image_new = cv.resize(image,(IMG_SIZE, IMG_SIZE))
     image_new = image_new.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
     #image = read_imagefile(file_location)
-    prediction = predict(image_new)
+    result = model.predict(image)
 
-    return prediction
+    return {"class":result[0]}
 
 
 
