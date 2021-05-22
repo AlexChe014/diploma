@@ -1,7 +1,13 @@
 import uvicorn
 from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import FileResponse
 from starlette.responses import RedirectResponse
 import os
+import cv2 as cv
+from io import BytesIO
+import aiofiles
+import matplotlib.pyplot as plt
+import numpy as np
 from application.components import predict, read_imagefile
 from application.schema import Symptom
 
@@ -21,12 +27,17 @@ async def predict_api(file: UploadFile = File(...)):
     if not extension:
         return "Image must be jpg or png format!"
     file_location = os.path.join(os.getcwd(), 'application', "images", file.filename)
-    with open(file_location, "wb+") as file_object:
-        file_object.write(file.file.read())
-    image = read_imagefile(file_location)
-    prediction = predict(image)
+    async with aiofiles.open(file_location, 'wb') as out_file:
+        content = await file.read()
+        await out_file.write(content) 
+    IMG_SIZE = 150
+    image = cv.imread(file_location, cv.IMREAD_GRAYSCALE)
+    #test_image = cv.resize(image,(IMG_SIZE, IMG_SIZE))
+    #image = image.reshape(1, IMG_SIZE, IMG_SIZE, 1)
+    #image = read_imagefile(file_location)
+    #prediction = predict(image)
 
-    return prediction
+    return file_location
 
 
 

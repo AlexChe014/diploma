@@ -39,7 +39,7 @@ def predict(image: Image.Image):
 
 
 def read_imagefile(file):# -> Image.Image:
-    IMG_SIZE = 100
+    IMG_SIZE = 150
     image = cv.imread(file, cv.IMREAD_GRAYSCALE)
     image = cv.resize(image,(IMG_SIZE, IMG_SIZE))
     image = image.reshape(1, IMG_SIZE, IMG_SIZE, 1)
