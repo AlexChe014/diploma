@@ -19,7 +19,7 @@ def predict(image: Image.Image):
     #image = np.expand_dims(image, 0)
     #image = image / 127.5 - 1.0
 
-    result = decode_predictions(model.predict(image), 2)[0]
+    result = model.predict(image)
 
     #response = []
     #for i, res in enumerate(result):
