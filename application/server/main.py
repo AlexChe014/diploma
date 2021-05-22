@@ -37,7 +37,7 @@ async def predict_api(file: UploadFile = File(...)):
     #image = read_imagefile(file_location)
     #prediction = predict(image)
 
-    return file_location
+    return image
 
 
 
