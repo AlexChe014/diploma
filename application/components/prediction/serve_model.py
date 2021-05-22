@@ -12,7 +12,7 @@ model = load_model(os.path.join(os.getcwd(), 'application', 'model_2.h5'))
 
 
 
-def predict(image: Image.Image):
+def predict(image: np.array):
     global model
 
     #image = np.asarray(image.resize((224, 224)))[..., :3]
