@@ -39,8 +39,12 @@ async def predict_api(file: UploadFile = File(...)):
     image_new = image_new.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
     #image = read_imagefile(file_location)
     result = model.predict(image_new)
+    if(int(result[0][0]) == 0):
+        result = "0"
+    else:
+        result = "1"
 
-    return {"path":os.path.exists("application/images/" + file.filename), "file":file.filename, "class": result[0][0]}#{"class": result[0][0]}
+    return {"path":os.path.exists("application/images/" + file.filename), "file":file.filename, "class": result}#{"class": result[0][0]}
 
 
 
