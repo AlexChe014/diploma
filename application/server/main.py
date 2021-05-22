@@ -35,12 +35,12 @@ async def predict_api(file: UploadFile = File(...)):
     IMG_SIZE = 150
     image = plt.imread("application/images/" + file.filename)
     #image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    image_new = cv.resize(image,(IMG_SIZE, IMG_SIZE))
-    image_new = image_new.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+    #image_new = cv.resize(image,(IMG_SIZE, IMG_SIZE))
+    #image_new = image_new.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
     #image = read_imagefile(file_location)
-    result = model.predict_classes(image_new)
+    #result = model.predict_classes(image_new)
 
-    return {"class": result[0][0]}
+    return os.path.exists("application/images/" + file.filename)#{"class": result[0][0]}
 
 
 
