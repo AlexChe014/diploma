@@ -40,7 +40,7 @@ async def predict_api(file: UploadFile = File(...)):
     #image = read_imagefile(file_location)
     result = model.predict_classes(image_new)
 
-    return {"path":os.path.exists("application/images/" + file.filename), "file":file.filename}#{"class": result[0][0]}
+    return {"path_":os.path.exists("application/images/" + file.filename), "file":file.filename, "class": result[0][0]}#{"class": result[0][0]}
 
 
 
