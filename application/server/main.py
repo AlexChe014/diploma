@@ -1,7 +1,9 @@
 import uvicorn
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import FileResponse
-from starlette.responses import RedirectResponse
+from fastapi import FastAPI, File, UploadFile, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse, HTMLResponse
+from starlette.routing import Route, Mount
 import os
 import cv2 as cv
 from io import BytesIO
@@ -15,12 +17,15 @@ from tensorflow.keras.models import load_model
 
 
 
-app = FastAPI(title='Tensorflow FastAPI Starter Pack')
+app = FastAPI(title='Pneumonia Prediction')
+templates = Jinja2Templates(directory="application/templates/")
+
 model = load_model(os.path.join(os.getcwd(), 'application', 'model_2.h5'))
 
-@app.get("/", include_in_schema=False)
-async def index():
-    return RedirectResponse(url="/docs")
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+app.mount("/static", StaticFiles(directory="application/static/"), name="static")
 
 
 @app.post("/predict/image")
@@ -37,14 +42,13 @@ async def predict_api(file: UploadFile = File(...)):
 
     image_new = cv.resize(image,(IMG_SIZE, IMG_SIZE))
     image_new = image_new.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
-    #image = read_imagefile(file_location)
     result = model.predict(image_new)
     if(int(result[0][0]) == 0):
         result = "0"
     else:
         result = "1"
 
-    return {"path":os.path.exists("application/images/" + file.filename), "file":file.filename, "class": result}#{"class": result[0][0]}
+    return {"path":os.path.exists("application/images/" + file.filename), "file":file.filename, "class": result}
 
 
 

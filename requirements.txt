@@ -8,5 +8,5 @@ numpy
 python-multipart
 opencv-python-headless
 matplotlib
-numpy
 aiofiles
+jinja2
