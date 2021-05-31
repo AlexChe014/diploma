@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, File, UploadFile, Request
+from fastapi import FastAPI, File, UploadFile, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse, HTMLResponse
@@ -44,12 +44,34 @@ async def predict_api(file: UploadFile = File(...)):
     image_new = image_new.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
     result = model.predict(image_new)
     if(int(result[0][0]) == 0):
-        result = "0"
+        result = "opacity"
     else:
-        result = "1"
+        result = "normal"
 
     return {"path":os.path.exists("application/images/" + file.filename), "file":file.filename, "class": result}
 
+@app.get("/test")
+def form_post(request: Request):
+    result = "Awaiting for file"
+    return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
+
+
+@app.post("/test")
+async def form_post(request: Request, file: UploadFile = File(...)):
+    file_location = os.path.join(os.getcwd(), 'application', "images", file.filename)
+    async with aiofiles.open(file_location, 'wb+') as out_file:
+        content = await file.read()
+        await out_file.write(content) 
+    IMG_SIZE = 150
+    image = plt.imread("application/images/" + file.filename)
+    image_new = cv.resize(image,(IMG_SIZE, IMG_SIZE))
+    image_new = image_new.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+    result = model.predict(image_new)
+    if(int(result[0][0]) == 0):
+        result = "opacity"
+    else:
+        result = "normal"
+    return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
 
 
